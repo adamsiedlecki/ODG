@@ -1,0 +1,84 @@
+swagger: "2.0"
+info:
+  description: "Service for components at OMS to generate documents"
+  version: "1.0.0"
+  title: "OrchardDocumentGeneratorApi"
+tags:
+  - name: "ODG"
+    externalDocs:
+      description: "Find out more"
+      url: "https://github.com/adamsiedlecki/ODG"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /charts:
+    post:
+      tags:
+        - "ODG"
+      summary: "Return chart"
+      operationId: "createChart"
+      consumes:
+        - "application/json"
+      produces:
+        - "image/jpeg"
+      parameters:
+        - in: "body"
+          name: "CreateChartInput"
+          description: Body of the chart request
+          required: true
+          schema:
+            $ref: "#/definitions/CreateChartInput"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: file
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Unexpected error"
+
+definitions:
+  CreateChartInput:
+    type: object
+    properties:
+      chartTitle:
+        type: string
+      valuesLabel:
+        type: string
+      timeLabel:
+        type: string
+      widthPixels:
+        type: integer
+        default: 600
+      heightPixels:
+        type: integer
+        default: 500
+      areItemLabelsVisible:
+        type: boolean
+      maxMinutesConnectingLines:
+        description: max amount of minutes between two values that still results in a line that connects it on a chart
+        type: integer
+        default: 120
+      valueList:
+        type: array
+        items:
+          $ref: "#/definitions/PresentableOnChart"
+    required:
+      - valueList
+
+  PresentableOnChart:
+    type: object
+    properties:
+      time:
+        type: string
+        format: date-time
+      value:
+        type: number
+      groupName:
+        type: string
+    required:
+      - time
+      - value
+      - groupName

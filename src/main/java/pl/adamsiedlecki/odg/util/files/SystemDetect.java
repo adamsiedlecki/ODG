@@ -1,0 +1,41 @@
+package pl.adamsiedlecki.odg.util.files;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class SystemDetect {
+
+    private static final String OS = System.getProperty("os.name").toLowerCase();
+
+    public static boolean isWindows() {
+        return OS.contains("win");
+    }
+
+    public static boolean isMac() {
+        return OS.contains("mac");
+    }
+
+    public static boolean isUnix() {
+        return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
+    }
+
+    public static boolean isSolaris() {
+        return OS.contains("sunos");
+    }
+
+    public static String getOS() {
+        if (isWindows()) {
+            return "win";
+        } else if (isMac()) {
+            return "osx";
+        } else if (isUnix()) {
+            return "uni";
+        } else if (isSolaris()) {
+            return "sol";
+        } else {
+            return "err";
+        }
+    }
+
+}
