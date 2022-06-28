@@ -81,7 +81,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>pl.adamsiedlecki.obm.ObmApplication</mainClass>
+					<mainClass>pl.adamsiedlecki.odg.OdgApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
