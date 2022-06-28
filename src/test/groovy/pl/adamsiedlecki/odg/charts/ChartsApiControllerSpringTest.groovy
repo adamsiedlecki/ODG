@@ -19,10 +19,10 @@ class ChartsApiControllerSpringTest extends Specification {
 
     def "should return chart file"() {
         given:
-            def input = prepare()
+            def input = prepareInput()
 
         when:
-            def result = odgChartsController.createChart(input)
+            def result = odgChartsController.createXyChart(input)
 
         then:
             result != null
@@ -33,7 +33,7 @@ class ChartsApiControllerSpringTest extends Specification {
 
     def "should return chart file even though some values are null"() {
         given:
-            def input = prepare()
+            def input = prepareInput()
                     .chartTitle(null)
                     .valuesLabel(null)
                     .timeLabel(null)
@@ -43,7 +43,7 @@ class ChartsApiControllerSpringTest extends Specification {
                     .maxMinutesConnectingLines(2)
 
         when:
-            def result = odgChartsController.createChart(input)
+            def result = odgChartsController.createXyChart(input)
 
         then:
             result != null
@@ -54,11 +54,11 @@ class ChartsApiControllerSpringTest extends Specification {
 
     def "should return bad request because of no presentable on chart data"() {
         given:
-            def input = prepare()
+            def input = prepareInput()
             input.valueList(List.of())
 
         when:
-            def result = odgChartsController.createChart(input)
+            def result = odgChartsController.createXyChart(input)
 
         then:
             result != null
@@ -68,11 +68,11 @@ class ChartsApiControllerSpringTest extends Specification {
 
     def "should return internal error because of too large image size"() {
         given:
-            def input = prepare()
+            def input = prepareInput()
             input.widthPixels(65501)
 
         when:
-            def result = odgChartsController.createChart(input)
+            def result = odgChartsController.createXyChart(input)
 
         then:
             result != null
@@ -80,7 +80,7 @@ class ChartsApiControllerSpringTest extends Specification {
             result.body == null
     }
 
-    CreateChartInput prepare() {
+    CreateChartInput prepareInput() {
         def baseTime = LocalDateTime.now()
 
         return new CreateChartInput()

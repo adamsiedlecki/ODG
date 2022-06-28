@@ -3,7 +3,7 @@ package pl.adamsiedlecki.odg.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import org.openapitools.api.ChartsApi;
+import org.openapitools.api.JfreeChartApi;
 import org.openapitools.model.CreateChartInput;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -19,12 +19,12 @@ import java.io.File;
 @RequestMapping("api/v1")
 @Slf4j
 @RequiredArgsConstructor
-public class OdgChartsController implements ChartsApi {
+public class OdgChartsController implements JfreeChartApi {
 
     private final  SimpleChartCreator simpleChartCreator;
 
     @Override
-    public ResponseEntity<Resource> createChart(CreateChartInput input) {
+    public ResponseEntity<Resource> createXyChart(CreateChartInput input) {
         log.info("Received CreateChartInput: {}", input);
 
         if (input.getValueList().isEmpty()) {

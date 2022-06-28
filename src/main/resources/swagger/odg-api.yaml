@@ -12,12 +12,12 @@ schemes:
   - "https"
   - "http"
 paths:
-  /charts:
+  /jfree-chart/xy-plot:
     post:
       tags:
         - "ODG"
-      summary: "Return chart"
-      operationId: "createChart"
+      summary: "Return XY chart"
+      operationId: "createXyChart"
       consumes:
         - "application/json"
       produces:
