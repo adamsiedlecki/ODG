@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("checkstyle:magicnumber") // there are multiple font sizes and so on
 public class ChartElementsCreator {
 
-    public XYDataset createSampleData(List<? extends PresentableOnChart> chartDataList, int maxHoursToConnectLines) {
+    public XYDataset createSampleData(List<? extends PresentableOnChart> chartDataList, int maxMinutesToConnectLines) {
 
         TimeSeriesCollection result = new TimeSeriesCollection();
         Map<String, List<PresentableOnChart>> map =
@@ -40,7 +40,7 @@ public class ChartElementsCreator {
 
             for (PresentableOnChart presentable : list) {
                 // adding null when three is no data
-                if (presentable.getTime().minusHours(maxHoursToConnectLines).isAfter(previous)) {
+                if (presentable.getTime().minusMinutes(maxMinutesToConnectLines).isAfter(previous)) {
                     LocalDateTime date = presentable.getTime().minusHours(1);
                     series.addOrUpdate(JFreeChartUtils.convert(date), null);
                 }
@@ -53,7 +53,7 @@ public class ChartElementsCreator {
         return result;
     }
 
-    public XYPlot createXYPlot(List<? extends PresentableOnChart> presentableOnChartDataList, Font font, String dataAxisLabel, String timeAxisLabel, boolean areItemLabelsVisible, int maxHoursToConnectLines) {
+    public XYPlot createXYPlot(List<? extends PresentableOnChart> presentableOnChartDataList, Font font, String dataAxisLabel, String timeAxisLabel, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
         DateAxis xAxis = new DateAxis(timeAxisLabel);
         xAxis.setTickLabelFont(font);
 
@@ -96,7 +96,7 @@ public class ChartElementsCreator {
             }
         }
 
-        XYPlot plot = new XYPlot(createSampleData(presentableOnChartDataList, maxHoursToConnectLines), xAxis, yAxis, renderer1);
+        XYPlot plot = new XYPlot(createSampleData(presentableOnChartDataList, maxMinutesToConnectLines), xAxis, yAxis, renderer1);
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);

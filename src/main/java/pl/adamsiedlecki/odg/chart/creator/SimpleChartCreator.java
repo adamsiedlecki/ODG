@@ -30,14 +30,14 @@ public class SimpleChartCreator implements ChartCreator {
 
 
     @Override
-    public File createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxHoursToConnectLines) {
+    public File createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create chart due to no data");
             return new File("");
         }
         chartDataList.sort(Comparator.comparing(PresentableOnChart::getTime));
 
-        XYPlot plot = elemCreator.createXYPlot(chartDataList, font, chartLabels.dataLabel(), chartLabels.timeLabel(), areItemLabelsVisible, maxHoursToConnectLines);
+        XYPlot plot = elemCreator.createXYPlot(chartDataList, font, chartLabels.dataLabel(), chartLabels.timeLabel(), areItemLabelsVisible, maxMinutesToConnectLines);
 
         JFreeChart chart = new JFreeChart(chartLabels.chartLabel(),
                                           JFreeChart.DEFAULT_TITLE_FONT,
