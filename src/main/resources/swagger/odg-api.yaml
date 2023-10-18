@@ -39,6 +39,33 @@ paths:
         "500":
           description: "Unexpected error"
 
+  /jfree-chart/bar/chart:
+    post:
+      tags:
+        - "ODG"
+      summary: "Return bar chart"
+      operationId: "createBarChart"
+      consumes:
+        - "application/json"
+      produces:
+        - "image/jpeg"
+      parameters:
+        - in: "body"
+          name: "CreateBarChartInput"
+          description: Body of the chart request
+          required: true
+          schema:
+            $ref: "#/definitions/CreateBarChartInput"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: file
+        "400":
+          description: "Bad request"
+        "500":
+          description: "Unexpected error"
+
 definitions:
   CreateChartInput:
     type: object
@@ -82,3 +109,41 @@ definitions:
       - time
       - value
       - groupName
+
+  CreateBarChartInput:
+    type: object
+    properties:
+      chartTitle:
+        type: string
+      valuesLabel:
+        type: string
+      categoriesLabel:
+        type: string
+      widthPixels:
+        type: integer
+        default: 600
+      heightPixels:
+        type: integer
+        default: 500
+      areItemLabelsVisible:
+        type: boolean
+      valueList:
+        type: array
+        items:
+          $ref: "#/definitions/PresentableOnBarChart"
+    required:
+      - valueList
+
+  PresentableOnBarChart:
+    type: object
+    properties:
+      value:
+        type: number
+      categoryName:
+        type: string
+      subCategoryName:
+        type: string
+    required:
+      - value
+      - categoryName
+      - subCategoryName

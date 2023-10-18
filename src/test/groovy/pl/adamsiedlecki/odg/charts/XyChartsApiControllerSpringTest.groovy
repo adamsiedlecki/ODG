@@ -12,12 +12,12 @@ import spock.lang.Specification
 import java.time.LocalDateTime
 
 @SpringBootTest
-class ChartsApiControllerSpringTest extends Specification {
+class XyChartsApiControllerSpringTest extends Specification {
 
     @Autowired
     OdgChartsController odgChartsController
 
-    def "should return chart file"() {
+    def "should return xy chart file"() {
         given:
             def input = prepareInput()
 
@@ -31,7 +31,7 @@ class ChartsApiControllerSpringTest extends Specification {
             result.body.contentLength() > 1
     }
 
-    def "should return chart file even though some values are null"() {
+    def "should return xy chart file even though some values are null"() {
         given:
             def input = prepareInput()
                     .chartTitle(null)

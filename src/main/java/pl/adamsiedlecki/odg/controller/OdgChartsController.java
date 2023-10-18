@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.openapitools.api.JfreeChartApi;
+import org.openapitools.model.CreateBarChartInput;
 import org.openapitools.model.CreateChartInput;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.adamsiedlecki.odg.chart.creator.SimpleChartCreator;
+import pl.adamsiedlecki.odg.chart.creator.BarChartCreator;
+import pl.adamsiedlecki.odg.chart.creator.XyChartCreator;
 import pl.adamsiedlecki.odg.chart.creator.dto.ChartLabels;
 
 import java.io.File;
@@ -21,7 +23,8 @@ import java.io.File;
 @RequiredArgsConstructor
 public class OdgChartsController implements JfreeChartApi {
 
-    private final  SimpleChartCreator simpleChartCreator;
+    private final XyChartCreator xyChartCreator;
+    private final BarChartCreator barChartCreator;
 
     @Override
     public ResponseEntity<Resource> createXyChart(CreateChartInput input) {
@@ -33,7 +36,7 @@ public class OdgChartsController implements JfreeChartApi {
 
         ChartLabels chartLabels = new ChartLabels(input.getChartTitle(), input.getValuesLabel(), input.getTimeLabel());
         try {
-            File chart = simpleChartCreator.createChart(input.getValueList(), input.getWidthPixels(), input.getHeightPixels(), chartLabels, input.getAreItemLabelsVisible(), input.getMaxMinutesConnectingLines());
+            File chart = xyChartCreator.createChart(input.getValueList(), input.getWidthPixels(), input.getHeightPixels(), chartLabels, input.getAreItemLabelsVisible(), input.getMaxMinutesConnectingLines());
             if(chart == null || !chart.exists()) {
                 return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
             }
@@ -42,5 +45,17 @@ public class OdgChartsController implements JfreeChartApi {
             log.error("Controller error: ", e);
             return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @Override
+    public ResponseEntity<Resource> createBarChart(CreateBarChartInput barInput) {
+        log.info("Creating bar chart: {}", barInput);
+        var byteArrayResource = barChartCreator.createChart(barInput.getValueList(),
+                barInput.getWidthPixels(),
+                barInput.getHeightPixels(),
+                barInput.getChartTitle(),
+                barInput.getCategoriesLabel(),
+                barInput.getValuesLabel());
+        return ResponseEntity.ok(byteArrayResource);
     }
 }

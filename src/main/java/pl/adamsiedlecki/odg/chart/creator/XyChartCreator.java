@@ -22,14 +22,13 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SimpleChartCreator implements ChartCreator {
+public class XyChartCreator {
 
     private final Font font = new Font("Dialog", Font.PLAIN, 14);
     private final ChartElementsCreator elemCreator;
     private final MyFilesystem myFilesystem;
 
 
-    @Override
     public File createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create chart due to no data");
