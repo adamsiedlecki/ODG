@@ -6,11 +6,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.openapitools.model.PresentableOnBarChart;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import pl.adamsiedlecki.odg.chart.creator.tools.BarLabelGenerator;
 import pl.adamsiedlecki.odg.exceptions.CannotCreateChartException;
 
 import java.awt.*;
@@ -40,6 +42,11 @@ public class BarChartCreator {
                 true, true, false);
         barChart.getLegend().setItemFont(font);
 
+        BarRenderer renderer = new BarRenderer();
+        renderer.setDefaultItemLabelGenerator(new BarLabelGenerator(chartDataList));
+        renderer.setDefaultItemLabelsVisible(true);
+        barChart.getCategoryPlot().setRenderer(renderer);
+
         BufferedImage image = barChart.createBufferedImage(width, height, BufferedImage.TYPE_INT_RGB, null);
         try {
             byte[] pngBytes = ChartUtils.encodeAsPNG(image);
@@ -52,7 +59,9 @@ public class BarChartCreator {
 
     private CategoryDataset createDataset(List<? extends PresentableOnBarChart> chartDataList) {
         var dataset = new DefaultCategoryDataset();
-        chartDataList.forEach(presentable -> dataset.addValue(presentable.getValue(), presentable.getCategoryName(), presentable.getSubCategoryName()));
+        chartDataList.forEach(presentable -> dataset.addValue(presentable.getValue(),
+                presentable.getCategoryName(),
+                presentable.getSubCategoryName()));
         return dataset;
     }
 }
