@@ -44,6 +44,7 @@ class XyChartsApiControllerSpringTest extends Specification {
         given:
             def input = prepareInput()
             input.setRedValueMarkerLineLevel(BigDecimal.ZERO)
+            input.setMaxMinutesConnectingLines(Integer.MAX_VALUE)
 
         when:
             def result = odgChartsController.createXyChart(input)

@@ -48,7 +48,7 @@ public class XyChartCreator {
 
         XYPlot plot = elemCreator.createXYPlot(chartDataList, font, chartLabels.dataLabel(), chartLabels.timeLabel(), areItemLabelsVisible, maxMinutesToConnectLines);
         if (redValueMarkerLineLevel != null) {
-            plot.addRangeMarker(new ValueMarker(redValueMarkerLineLevel.doubleValue(), Color.red, new BasicStroke(1.0f))); // line on chart
+            plot.addRangeMarker(new ValueMarker(redValueMarkerLineLevel.doubleValue(), Color.red, new BasicStroke(7.0f), Color.GREEN, new BasicStroke(2.0f), 0.2f)); // line on chart
         }
 
         JFreeChart chart = new JFreeChart(chartLabels.chartLabel(),
