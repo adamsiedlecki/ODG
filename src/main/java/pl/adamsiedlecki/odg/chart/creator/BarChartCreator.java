@@ -6,9 +6,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.ui.Layer;
+import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetUtils;
 import org.openapitools.model.PresentableOnBarChart;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -28,16 +32,23 @@ public class BarChartCreator {
     private final Font font = new Font("Dialog", Font.PLAIN, 14);
 
 
-    public ByteArrayResource createChart(List<? extends PresentableOnBarChart> chartDataList, int width, int height, String chartLabel, String categoriesLabel, String valuesLabel) {
+    public ByteArrayResource createChart(List<? extends PresentableOnBarChart> chartDataList,
+                                         int width,
+                                         int height,
+                                         String chartLabel,
+                                         String categoriesLabel,
+                                         String valuesLabel,
+                                         String maxValueMarkerText) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create bar chart due to no data");
             return null;
         }
+        var dataset = createDataset(chartDataList);
         JFreeChart barChart = ChartFactory.createBarChart(
                 chartLabel,
                 categoriesLabel,
                 valuesLabel,
-                createDataset(chartDataList),
+                dataset,
                 PlotOrientation.VERTICAL,
                 true, true, false);
         barChart.getLegend().setItemFont(font);
@@ -46,6 +57,18 @@ public class BarChartCreator {
         renderer.setDefaultItemLabelGenerator(new BarLabelGenerator(chartDataList));
         renderer.setDefaultItemLabelsVisible(true);
         barChart.getCategoryPlot().setRenderer(renderer);
+
+        if (maxValueMarkerText != null) {
+            Number maximum = DatasetUtils.findMaximumRangeValue(dataset);
+            ValueMarker max = new ValueMarker(maximum.floatValue());
+            max.setPaint(Color.RED);
+            max.setLabelFont(font);
+            max.setStroke(new BasicStroke(2.0f));
+            max.setAlpha(0.6f);
+            max.setLabel("Highest Value");
+            max.setLabelTextAnchor(TextAnchor.CENTER_LEFT);
+            barChart.getCategoryPlot().addRangeMarker(max, Layer.FOREGROUND);
+        }
 
         BufferedImage image = barChart.createBufferedImage(width, height, BufferedImage.TYPE_INT_RGB, null);
         try {

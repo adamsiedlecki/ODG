@@ -66,7 +66,8 @@ public class OdgChartsController implements JfreeChartApi {
                 barInput.getHeightPixels(),
                 barInput.getChartTitle(),
                 barInput.getCategoriesLabel(),
-                barInput.getValuesLabel());
+                barInput.getValuesLabel(),
+                barInput.getMaxValueMarkerText());
         return ResponseEntity.ok(byteArrayResource);
     }
 

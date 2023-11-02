@@ -129,6 +129,8 @@ definitions:
         default: 500
       areItemLabelsVisible:
         type: boolean
+      maxValueMarkerText:
+        type: string
       valueList:
         type: array
         items:
