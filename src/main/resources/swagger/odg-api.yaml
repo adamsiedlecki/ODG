@@ -84,6 +84,8 @@ definitions:
         default: 500
       areItemLabelsVisible:
         type: boolean
+      redValueMarkerLineLevel:
+        type: number
       maxMinutesConnectingLines:
         description: max amount of minutes between two values that still results in a line that connects it on a chart
         type: integer

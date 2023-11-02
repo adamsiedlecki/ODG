@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,7 +33,13 @@ public class XyChartCreator {
     private final MyFilesystem myFilesystem;
 
 
-    public ByteArrayResource createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
+    public ByteArrayResource createChart(List<? extends PresentableOnChart> chartDataList,
+                                         int width,
+                                         int height,
+                                         ChartLabels chartLabels,
+                                         boolean areItemLabelsVisible,
+                                         int maxMinutesToConnectLines,
+                                         BigDecimal redValueMarkerLineLevel) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create chart due to no data");
             return null;
@@ -40,7 +47,9 @@ public class XyChartCreator {
         chartDataList.sort(Comparator.comparing(PresentableOnChart::getTime));
 
         XYPlot plot = elemCreator.createXYPlot(chartDataList, font, chartLabels.dataLabel(), chartLabels.timeLabel(), areItemLabelsVisible, maxMinutesToConnectLines);
-        //plot.addRangeMarker(new ValueMarker(0.0, Color.red, new BasicStroke(1.0f))); // line on chart
+        if (redValueMarkerLineLevel != null) {
+            plot.addRangeMarker(new ValueMarker(redValueMarkerLineLevel.doubleValue(), Color.red, new BasicStroke(1.0f))); // line on chart
+        }
 
         JFreeChart chart = new JFreeChart(chartLabels.chartLabel(),
                                           JFreeChart.DEFAULT_TITLE_FONT,

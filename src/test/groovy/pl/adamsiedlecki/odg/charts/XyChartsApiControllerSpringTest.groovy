@@ -40,6 +40,24 @@ class XyChartsApiControllerSpringTest extends Specification {
             Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     }
 
+    def "should return xy chart file with red line"() {
+        given:
+            def input = prepareInput()
+            input.setRedValueMarkerLineLevel(BigDecimal.ZERO)
+
+        when:
+            def result = odgChartsController.createXyChart(input)
+
+        then:
+            result != null
+            result.statusCode == HttpStatus.OK
+            result.body.exists()
+            result.body.contentLength() > 1
+
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    }
+
     def "should return xy chart file even though some values are null"() {
         given:
             def input = prepareInput()
@@ -75,17 +93,17 @@ class XyChartsApiControllerSpringTest extends Specification {
             result.body == null
     }
 
-    def "should return internal error because of too large image size"() {
+    def "should return bad request because of too large image size"() {
         given:
             def input = prepareInput()
-            input.widthPixels(65501)
+            input.widthPixels(6550100)
 
         when:
             def result = odgChartsController.createXyChart(input)
 
         then:
             result != null
-            result.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
+            result.statusCode == HttpStatus.BAD_REQUEST
             result.body == null
     }
 
