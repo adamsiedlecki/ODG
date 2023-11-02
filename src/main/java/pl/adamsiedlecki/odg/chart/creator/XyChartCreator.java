@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.openapitools.model.PresentableOnChart;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import pl.adamsiedlecki.odg.chart.creator.dto.ChartLabels;
 import pl.adamsiedlecki.odg.chart.creator.tools.ChartElementsCreator;
@@ -14,6 +16,7 @@ import pl.adamsiedlecki.odg.util.UuidTool;
 import pl.adamsiedlecki.odg.util.files.MyFilesystem;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
@@ -29,14 +32,15 @@ public class XyChartCreator {
     private final MyFilesystem myFilesystem;
 
 
-    public File createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
+    public ByteArrayResource createChart(List<? extends PresentableOnChart> chartDataList, int width, int height, ChartLabels chartLabels, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create chart due to no data");
-            return new File("");
+            return null;
         }
         chartDataList.sort(Comparator.comparing(PresentableOnChart::getTime));
 
         XYPlot plot = elemCreator.createXYPlot(chartDataList, font, chartLabels.dataLabel(), chartLabels.timeLabel(), areItemLabelsVisible, maxMinutesToConnectLines);
+        //plot.addRangeMarker(new ValueMarker(0.0, Color.red, new BasicStroke(1.0f))); // line on chart
 
         JFreeChart chart = new JFreeChart(chartLabels.chartLabel(),
                                           JFreeChart.DEFAULT_TITLE_FONT,
@@ -44,15 +48,13 @@ public class XyChartCreator {
                                           true);
         chart.getLegend().setItemFont(font);
 
-        String path = myFilesystem.getChartsPath() + UuidTool.getRandom() + ".jpg";
-        File destination = new File(path);
+        BufferedImage image = chart.createBufferedImage(width, height, BufferedImage.TYPE_INT_RGB, null);
         try {
-            ChartUtils.saveChartAsJPEG(destination, chart, width, height);
-            log.info("Chart created: {}", destination.getName());
+            byte[] pngBytes = ChartUtils.encodeAsPNG(image);
+            return new ByteArrayResource(pngBytes);
         } catch (IOException e) {
-            log.error("Error while creating a chart: {}", e.getMessage());
+            log.error("Error while creating an xy chart: {}", e.getMessage());
             throw new CannotCreateChartException();
         }
-        return destination;
     }
 }

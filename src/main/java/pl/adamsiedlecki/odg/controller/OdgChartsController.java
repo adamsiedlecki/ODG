@@ -16,6 +16,7 @@ import pl.adamsiedlecki.odg.chart.creator.XyChartCreator;
 import pl.adamsiedlecki.odg.chart.creator.dto.ChartLabels;
 
 import java.io.File;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("api/v1")
@@ -36,11 +37,11 @@ public class OdgChartsController implements JfreeChartApi {
 
         ChartLabels chartLabels = new ChartLabels(input.getChartTitle(), input.getValuesLabel(), input.getTimeLabel());
         try {
-            File chart = xyChartCreator.createChart(input.getValueList(), input.getWidthPixels(), input.getHeightPixels(), chartLabels, input.getAreItemLabelsVisible(), input.getMaxMinutesConnectingLines());
-            if(chart == null || !chart.exists()) {
+            var byteArrayResource = xyChartCreator.createChart(input.getValueList(), input.getWidthPixels(), input.getHeightPixels(), chartLabels, input.getAreItemLabelsVisible(), input.getMaxMinutesConnectingLines());
+            if(byteArrayResource == null) {
                 return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
             }
-            return ResponseEntity.ok(new FileSystemResource(chart));
+            return ResponseEntity.ok(byteArrayResource);
         } catch (Exception e) {
             log.error("Controller error: ", e);
             return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();

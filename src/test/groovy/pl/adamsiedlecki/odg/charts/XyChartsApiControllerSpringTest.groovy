@@ -5,14 +5,20 @@ import org.openapitools.model.CreateChartInput
 import org.openapitools.model.PresentableOnChart
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpStatus
 import pl.adamsiedlecki.odg.controller.OdgChartsController
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 
 @SpringBootTest
 class XyChartsApiControllerSpringTest extends Specification {
+
+    def filePath = Path.of("test", "xyChart.png")
 
     @Autowired
     OdgChartsController odgChartsController
@@ -29,6 +35,9 @@ class XyChartsApiControllerSpringTest extends Specification {
             result.statusCode == HttpStatus.OK
             result.body.exists()
             result.body.contentLength() > 1
+
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     }
 
     def "should return xy chart file even though some values are null"() {
@@ -98,6 +107,6 @@ class XyChartsApiControllerSpringTest extends Specification {
 
                         .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(4)).groupName("group2"))
                         .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(7)).groupName("group2"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(3)).value(BigDecimal.valueOf(2)).groupName("group2"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(3)).value(BigDecimal.valueOf(-2)).groupName("group2"))
     }
 }
