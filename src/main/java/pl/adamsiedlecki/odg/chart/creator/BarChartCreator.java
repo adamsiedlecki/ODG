@@ -65,7 +65,7 @@ public class BarChartCreator {
             max.setLabelFont(font);
             max.setStroke(new BasicStroke(2.0f));
             max.setAlpha(0.6f);
-            max.setLabel("Highest Value");
+            max.setLabel(maxValueMarkerText);
             max.setLabelTextAnchor(TextAnchor.CENTER_LEFT);
             barChart.getCategoryPlot().addRangeMarker(max, Layer.FOREGROUND);
         }
