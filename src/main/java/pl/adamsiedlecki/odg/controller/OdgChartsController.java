@@ -25,6 +25,7 @@ public class OdgChartsController implements JfreeChartApi {
 
     @Override
     public ResponseEntity<Resource> createXyChart(CreateChartInput input) {
+        long start = System.currentTimeMillis();
         log.info("Received CreateChartInput: {}", input);
 
         if (isSizeTooBig(input.getWidthPixels(), input.getHeightPixels())) {
@@ -47,6 +48,7 @@ public class OdgChartsController implements JfreeChartApi {
             if(byteArrayResource == null) {
                 return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
             }
+            log.info("Xy chart took: {} millis", System.currentTimeMillis()-start);
             return ResponseEntity.ok(byteArrayResource);
         } catch (Exception e) {
             log.error("Controller error: ", e);
@@ -56,6 +58,7 @@ public class OdgChartsController implements JfreeChartApi {
 
     @Override
     public ResponseEntity<Resource> createBarChart(CreateBarChartInput barInput) {
+        long start = System.currentTimeMillis();
         if (isSizeTooBig(barInput.getWidthPixels(), barInput.getHeightPixels())) {
             log.error("Image size is too big");
             return ResponseEntity.badRequest().build();
@@ -68,6 +71,7 @@ public class OdgChartsController implements JfreeChartApi {
                 barInput.getCategoriesLabel(),
                 barInput.getValuesLabel(),
                 barInput.getMaxValueMarkerText());
+        log.info("Bar chart took: {} millis", System.currentTimeMillis()-start);
         return ResponseEntity.ok(byteArrayResource);
     }
 
