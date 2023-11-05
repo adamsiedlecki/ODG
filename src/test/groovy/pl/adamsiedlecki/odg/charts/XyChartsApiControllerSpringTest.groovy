@@ -117,15 +117,15 @@ class XyChartsApiControllerSpringTest extends Specification {
                         .timeLabel("example time label")
                         .widthPixels(700)
                         .heightPixels(500)
-                        .areItemLabelsVisible(false)
-                        .maxMinutesConnectingLines(2)
+                        .areItemLabelsVisible(true)
+                        .maxMinutesConnectingLines(2000)
 
-                        .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(2)).groupName("group1"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(3)).groupName("group1"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(4)).value(BigDecimal.valueOf(5)).groupName("group1"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(2)).groupName("stacja1"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(3)).groupName("stacja1"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(4)).value(BigDecimal.valueOf(5)).groupName("stacja1"))
 
-                        .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(4)).groupName("group2"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(7)).groupName("group2"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(3)).value(BigDecimal.valueOf(-2)).groupName("group2"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(4)).groupName("stacja2"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(7)).groupName("stacja2"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(3)).value(BigDecimal.valueOf(-2)).groupName("stacja2"))
     }
 }

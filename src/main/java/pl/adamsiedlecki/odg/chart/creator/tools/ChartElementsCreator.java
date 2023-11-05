@@ -67,40 +67,20 @@ public class ChartElementsCreator {
         renderer1.setAutoPopulateSeriesStroke(false);
         renderer1.setDefaultItemLabelGenerator(new StandardXYItemLabelGenerator());
         renderer1.setDefaultItemLabelsVisible(areItemLabelsVisible);
-
-        renderer1.setSeriesItemLabelFont(0, new Font(Font.MONOSPACED, Font.PLAIN, 13));
-        renderer1.setSeriesItemLabelFont(1, new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        renderer1.setSeriesItemLabelFont(2, new Font(Font.MONOSPACED, Font.PLAIN, 11));
-        renderer1.setSeriesItemLabelFont(3, new Font(Font.MONOSPACED, Font.PLAIN, 10));
-        renderer1.setSeriesItemLabelFont(4, new Font(Font.MONOSPACED, Font.PLAIN, 9));
-        renderer1.setSeriesItemLabelFont(5, new Font(Font.MONOSPACED, Font.PLAIN, 8));
-        renderer1.setSeriesItemLabelFont(6, new Font(Font.MONOSPACED, Font.PLAIN, 7));
-        renderer1.setSeriesItemLabelFont(7, new Font(Font.MONOSPACED, Font.PLAIN, 6));
-        renderer1.setSeriesItemLabelFont(8, new Font(Font.MONOSPACED, Font.PLAIN, 6));
-        renderer1.setSeriesItemLabelFont(9, new Font(Font.MONOSPACED, Font.PLAIN, 6));
-        renderer1.setSeriesItemLabelFont(10, new Font(Font.MONOSPACED, Font.PLAIN, 6));
-        renderer1.setSeriesItemLabelFont(11, new Font(Font.MONOSPACED, Font.PLAIN, 6));
+        renderer1.setDefaultItemLabelFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 
 
-        int fontSize = 13;
-        List<String> colorList = List.of("#182c25", "#ffd759", "#9d867e", "#e54f6e", "#3aff03", "#2403a4",
-                "#0038fa", "#ff280a", "#00ffef", "#fd00fa", "#4d8679");
-        colorList = colorList.stream().distinct().toList();
-        for (int i = 0; i < 11; i++) {
-
-            renderer1.setSeriesPaint(i, Color.decode(colorList.get(i)));
-            renderer1.setSeriesItemLabelFont(i, new Font(Font.MONOSPACED, Font.BOLD, fontSize));
-            renderer1.setSeriesItemLabelPaint(i, Color.decode(colorList.get(i)).brighter().brighter());
-            if (fontSize > 6) {
-                fontSize--;
-            }
-        }
 
         XYPlot plot = new XYPlot(createSampleData(presentableOnChartDataList, maxMinutesToConnectLines), xAxis, yAxis, renderer1);
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         plot.setAxisOffset(new RectangleInsets(6, 6, 20, 6));
+
+        int groupsSize = presentableOnChartDataList.stream().collect(Collectors.groupingBy(PresentableOnChart::getGroupName)).size();
+        for (int i = 0; i < groupsSize; i++) {
+            renderer1.setSeriesItemLabelPaint(i, renderer1.lookupSeriesPaint(i));
+        }
 
         return plot;
     }
