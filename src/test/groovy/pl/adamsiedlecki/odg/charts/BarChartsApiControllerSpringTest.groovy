@@ -86,8 +86,8 @@ class BarChartsApiControllerSpringTest extends Specification {
                 .areItemLabelsVisible(false)
 
                 .addValueListItem(new PresentableOnBarChart().categoryName("stacja1").value(bd(10)).subCategoryName(""))
-                .addValueListItem(new PresentableOnBarChart().categoryName("stacja2").value(bd(11)).subCategoryName(""))
                 .addValueListItem(new PresentableOnBarChart().categoryName("stacja3").value(bd(2)).subCategoryName(""))
+                .addValueListItem(new PresentableOnBarChart().categoryName("stacja2").value(bd(11)).subCategoryName(""))
 
     }
 

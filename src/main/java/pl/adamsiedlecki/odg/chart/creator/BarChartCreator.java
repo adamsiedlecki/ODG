@@ -22,6 +22,7 @@ import pl.adamsiedlecki.odg.exceptions.CannotCreateChartException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class BarChartCreator {
     private final Font font = new Font("Dialog", Font.PLAIN, 14);
 
 
-    public ByteArrayResource createChart(List<? extends PresentableOnBarChart> chartDataList,
+    public ByteArrayResource createChart(List<PresentableOnBarChart> chartDataList,
                                          int width,
                                          int height,
                                          String chartLabel,
@@ -80,8 +81,9 @@ public class BarChartCreator {
         }
     }
 
-    private CategoryDataset createDataset(List<? extends PresentableOnBarChart> chartDataList) {
+    private CategoryDataset createDataset(List<PresentableOnBarChart> chartDataList) {
         var dataset = new DefaultCategoryDataset();
+        chartDataList.sort(Comparator.comparing(PresentableOnBarChart::getCategoryName));
         chartDataList.forEach(presentable -> dataset.addValue(presentable.getValue(),
                 presentable.getCategoryName(),
                 presentable.getSubCategoryName()));
