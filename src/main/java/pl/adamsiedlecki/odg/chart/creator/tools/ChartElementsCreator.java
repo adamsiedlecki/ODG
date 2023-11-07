@@ -13,6 +13,7 @@ import org.jfree.data.xy.XYDataset;
 import org.openapitools.model.PresentableOnChart;
 import org.springframework.stereotype.Component;
 import pl.adamsiedlecki.odg.util.JFreeChartUtils;
+import pl.adamsiedlecki.odg.util.NaturalSort;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -31,7 +32,7 @@ public class ChartElementsCreator {
         Map<String, List<PresentableOnChart>> map =
                 chartDataList.stream().collect(Collectors.groupingBy(PresentableOnChart::getGroupName));
         List<String> keys = new ArrayList<>(map.keySet());
-        Collections.sort(keys);
+        keys.sort(NaturalSort::compare);
         for (String tName : keys) {
             TimeSeries series = new TimeSeries(tName);
             List<PresentableOnChart> list = map.get(tName);

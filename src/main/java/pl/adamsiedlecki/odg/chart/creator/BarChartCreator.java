@@ -18,6 +18,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import pl.adamsiedlecki.odg.chart.creator.tools.BarLabelGenerator;
 import pl.adamsiedlecki.odg.exceptions.CannotCreateChartException;
+import pl.adamsiedlecki.odg.util.NaturalSort;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -83,7 +84,7 @@ public class BarChartCreator {
 
     private CategoryDataset createDataset(List<PresentableOnBarChart> chartDataList) {
         var dataset = new DefaultCategoryDataset();
-        chartDataList.sort(Comparator.comparing(PresentableOnBarChart::getCategoryName));
+        chartDataList.sort((a, b) -> NaturalSort.compare(a.getCategoryName(), b.getCategoryName()));
         chartDataList.forEach(presentable -> dataset.addValue(presentable.getValue(),
                 presentable.getCategoryName(),
                 presentable.getSubCategoryName()));
