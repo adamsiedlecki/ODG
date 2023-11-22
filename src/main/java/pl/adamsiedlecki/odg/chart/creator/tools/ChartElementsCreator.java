@@ -14,6 +14,7 @@ import org.openapitools.model.PresentableOnChart;
 import org.springframework.stereotype.Component;
 import pl.adamsiedlecki.odg.util.JFreeChartUtils;
 import pl.adamsiedlecki.odg.util.NaturalSort;
+import pl.adamsiedlecki.odg.util.OdgConstants;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -57,6 +58,7 @@ public class ChartElementsCreator {
     public XYPlot createXYPlot(List<? extends PresentableOnChart> presentableOnChartDataList, Font font, String dataAxisLabel, String timeAxisLabel, boolean areItemLabelsVisible, int maxMinutesToConnectLines) {
         DateAxis xAxis = new DateAxis(timeAxisLabel);
         xAxis.setTickLabelFont(font);
+        xAxis.setLocale(OdgConstants.DEFAULT_LOCALE);
 
         NumberAxis yAxis = new NumberAxis(dataAxisLabel);
         yAxis.setAutoRangeIncludesZero(false);

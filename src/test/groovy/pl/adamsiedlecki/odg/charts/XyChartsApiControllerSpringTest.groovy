@@ -126,6 +126,6 @@ class XyChartsApiControllerSpringTest extends Specification {
 
                         .addValueListItem(new PresentableOnChart().time(baseTime).value(BigDecimal.valueOf(4)).groupName("stacja2"))
                         .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(1)).value(BigDecimal.valueOf(7)).groupName("stacja2"))
-                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(3)).value(BigDecimal.valueOf(-2)).groupName("stacja2"))
+                        .addValueListItem(new PresentableOnChart().time(baseTime.plusHours(300)).value(BigDecimal.valueOf(-2)).groupName("stacja2"))
     }
 }
