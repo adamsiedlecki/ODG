@@ -44,7 +44,8 @@ public class OdgChartsController implements JfreeChartApi {
                     chartLabels,
                     input.getAreItemLabelsVisible(),
                     input.getMaxMinutesConnectingLines(),
-                    input.getRedValueMarkerLineLevel());
+                    input.getRedValueMarkerLineLevel(),
+                    input.getIsPercentChart());
             if(byteArrayResource == null) {
                 return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).build();
             }

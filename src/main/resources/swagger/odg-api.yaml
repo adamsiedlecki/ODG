@@ -90,6 +90,9 @@ definitions:
         description: max amount of minutes between two values that still results in a line that connects it on a chart
         type: integer
         default: 120
+      isPercentChart:
+        description: should range be 0 - 100
+        type: boolean
       valueList:
         type: array
         items:

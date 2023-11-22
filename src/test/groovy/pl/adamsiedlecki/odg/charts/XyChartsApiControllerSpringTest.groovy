@@ -19,6 +19,7 @@ import java.time.LocalDateTime
 class XyChartsApiControllerSpringTest extends Specification {
 
     def filePath = Path.of("test", "xyChart.png")
+    def xyPercentFilePath = Path.of("test", "xyPercentChart.png")
 
     @Autowired
     OdgChartsController odgChartsController
@@ -38,6 +39,24 @@ class XyChartsApiControllerSpringTest extends Specification {
 
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    }
+
+    def "should return xy percent chart file"() {
+        given:
+        def input = prepareInput()
+        input.setIsPercentChart(true)
+
+        when:
+        def result = odgChartsController.createXyChart(input)
+
+        then:
+        result != null
+        result.statusCode == HttpStatus.OK
+        result.body.exists()
+        result.body.contentLength() > 1
+
+        Files.createDirectories(xyPercentFilePath.getParent());
+        Files.write(xyPercentFilePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     }
 
     def "should return xy chart file with red line"() {
