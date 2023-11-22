@@ -41,7 +41,7 @@ public class XyChartCreator {
                                          boolean areItemLabelsVisible,
                                          int maxMinutesToConnectLines,
                                          BigDecimal redValueMarkerLineLevel,
-                                         boolean isPercentChart) {
+                                         Boolean isPercentChart) {
         if (chartDataList.isEmpty()) {
             log.error("Cannot create chart due to no data");
             return null;
@@ -52,7 +52,7 @@ public class XyChartCreator {
         if (redValueMarkerLineLevel != null) {
             plot.addRangeMarker(new ValueMarker(redValueMarkerLineLevel.doubleValue(), Color.red, new BasicStroke(7.0f), Color.GREEN, new BasicStroke(2.0f), 0.2f)); // line on chart
         }
-        if (isPercentChart) {
+        if (isPercentChart != null && isPercentChart) {
             plot.getRangeAxis().setRange(new Range(0, 100));
         }
 
