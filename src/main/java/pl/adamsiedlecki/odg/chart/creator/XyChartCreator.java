@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYBoxAnnotation;
+import org.jfree.chart.annotations.XYLineAnnotation;
+import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.Range;
@@ -55,6 +58,11 @@ public class XyChartCreator {
         if (isPercentChart != null && isPercentChart) {
             plot.getRangeAxis().setRange(new Range(0, 100));
         }
+//        plot.addAnnotation(new XYTextAnnotation("adnotacja", plot.getDataset().getXValue(0, 0), 100));
+//        plot.addAnnotation(new XYLineAnnotation(plot.getDataset().getXValue(0, 0), 100,
+//                plot.getDataset().getXValue(0, 0), chartDataList.get(0).getValue().doubleValue(),
+//                new BasicStroke(1f), Color.GREEN));
+
 
         JFreeChart chart = new JFreeChart(chartLabels.chartLabel(),
                                           JFreeChart.DEFAULT_TITLE_FONT,

@@ -60,8 +60,9 @@ public class ChartElementsCreator {
         xAxis.setTickLabelFont(font);
         xAxis.setLocale(OdgConstants.DEFAULT_LOCALE);
 
+        boolean autoRangeIncludesZero = false;
         NumberAxis yAxis = new NumberAxis(dataAxisLabel);
-        yAxis.setAutoRangeIncludesZero(false);
+        yAxis.setAutoRangeIncludesZero(autoRangeIncludesZero);
         yAxis.setTickLabelFont(font);
 
         XYLineAndShapeRenderer renderer1 = new XYLineAndShapeRenderer();
@@ -79,6 +80,17 @@ public class ChartElementsCreator {
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         plot.setAxisOffset(new RectangleInsets(6, 6, 20, 6));
+
+        NumberAxis rightAxis = new NumberAxis(dataAxisLabel);
+        rightAxis.setAutoRangeIncludesZero(autoRangeIncludesZero);
+        rightAxis.setTickLabelFont(font);
+
+        plot.setRangeAxis(1, rightAxis);
+
+        rightAxis.setRange(yAxis.getRange());
+        yAxis.addChangeListener(e -> {
+            rightAxis.setRange(yAxis.getRange());
+        });
 
         int groupsSize = presentableOnChartDataList.stream().collect(Collectors.groupingBy(PresentableOnChart::getGroupName)).size();
         for (int i = 0; i < groupsSize; i++) {
