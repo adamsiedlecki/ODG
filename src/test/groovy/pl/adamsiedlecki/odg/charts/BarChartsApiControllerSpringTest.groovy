@@ -17,8 +17,6 @@ import java.nio.file.StandardOpenOption
 @SpringBootTest
 class BarChartsApiControllerSpringTest extends Specification {
 
-    def filePath = Path.of("test", "barChart.png")
-
     @Autowired
     OdgChartsController odgChartsController
 
@@ -35,8 +33,9 @@ class BarChartsApiControllerSpringTest extends Specification {
             result.body.exists()
             result.body.contentLength() > 1
 
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+            Path path = getPath("barchart1")
+            Files.createDirectories(path.getParent());
+            Files.write(path, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     }
 
     def "should return simple bar chart file"() {
@@ -52,8 +51,14 @@ class BarChartsApiControllerSpringTest extends Specification {
             result.body.exists()
             result.body.contentLength() > 1
 
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+            Path path = getPath("barchart2")
+            Files.createDirectories(path.getParent());
+            Files.write(path, ((ByteArrayResource)result.getBody()).byteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    }
+
+    private Path getPath(String name) {
+        return Path.of("test", name + ".png")
+
     }
 
     private CreateBarChartInput prepareSubCategoriesInput() {

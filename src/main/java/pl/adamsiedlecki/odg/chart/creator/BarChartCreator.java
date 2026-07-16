@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -59,6 +61,9 @@ public class BarChartCreator {
         renderer.setDefaultItemLabelGenerator(new BarLabelGenerator(chartDataList));
         renderer.setDefaultItemLabelsVisible(true);
         barChart.getCategoryPlot().setRenderer(renderer);
+
+        CategoryAxis axis = barChart.getCategoryPlot().getDomainAxis();
+        axis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
 
         if (maxValueMarkerText != null) {
             Number maximum = DatasetUtils.findMaximumRangeValue(dataset);
