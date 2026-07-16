@@ -84,7 +84,9 @@ public class BarChartCreator {
 
     private CategoryDataset createDataset(List<PresentableOnBarChart> chartDataList) {
         var dataset = new DefaultCategoryDataset();
-        chartDataList.sort((a, b) -> NaturalSort.compare(a.getCategoryName(), b.getCategoryName()));
+        if (chartDataList.stream().allMatch(presentableOnBarChart -> "".equals(presentableOnBarChart.getSubCategoryName()))) {
+            chartDataList.sort((a, b) -> NaturalSort.compare(a.getCategoryName(), b.getCategoryName()));
+        }
         chartDataList.forEach(presentable -> dataset.addValue(presentable.getValue(),
                 presentable.getCategoryName(),
                 presentable.getSubCategoryName()));
